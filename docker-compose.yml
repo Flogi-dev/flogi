@@ -1,0 +1,84 @@
+version: "3.8"
+
+services:
+  main_db:
+      build:
+        context: ./DB # DB 디렉토리를 빌드 컨텍스트로 사용
+        dockerfile: Dockerfile
+      container_name: flogi_main_db
+      ports:
+        - "7654:5432"
+      environment:
+        POSTGRES_USER: flogi
+        POSTGRES_PASSWORD: 1234
+        POSTGRES_DB: flogi_main # DB 이름 변경
+      volumes:
+        - ./DB/data/main:/var/lib/postgresql/data # 새 구조에 맞춘 데이터 저장 경로
+      restart: unless-stopped
+
+  data_db:
+    build:
+      context: ./db # D:\comfort_commit\db 디렉토리 사용
+      dockerfile: Dockerfile
+    container_name: flogi_data_db # 보스께서 수정 요청하신 이름
+    ports:
+      - "7655:5432" # 호스트 포트 7655, 컨테이너 포트 5432
+    environment:
+      POSTGRES_USER: flogi
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: flogi_data
+    volumes:
+      - ./db_data/data:/var/lib/postgresql/data # 호스트 D:\comfort_commit\db_data\data 에 데이터 저장
+    restart: unless-stopped
+
+  redis:
+    image: redis:7
+    container_name: comfort_commit_redis
+    ports:
+      - "6380:6379" # 호스트 포트 6380 (충돌 방지), 컨테이너 포트 6379
+    restart: unless-stopped
+
+  web_service: # 서비스 이름 변경 (예시)
+    build:
+      context: . # 프로젝트 루트를 빌드 컨텍스트로 사용
+      dockerfile: Web/Dockerfile # Web 디렉토리 내의 Dockerfile 지정
+    container_name: flogi_web # 컨테이너 이름 변경 (예시)
+    ports:
+      - "9000:8000" # 이전과 동일하게 호스트 포트 충돌 회피
+    environment:
+      - MAIN_DB_URL=postgresql://chan:1234@db_main_service:5432/flogi_main # DB 서비스명 변경
+      - DATA_DB_URL=postgresql://chan:1234@db_data_service:5432/flogi_data # DB 서비스명 변경
+      - REDIS_URL=redis://redis_service:6379/0 # Redis 서비스명 변경
+      # .env 파일 내용을 여기에 직접 명시하거나, Web/Dockerfile에서 .env 파일을 COPY하고 앱에서 로드
+    volumes:
+      - ./Web:/app/Web # 개발 시 Web 코드 변경 즉시 반영
+      - ./flogi:/app/flogi # 개발 시 flogi 코드 변경 즉시 반영
+      - ./poetry.lock:/app/poetry.lock # 루트의 lock 파일 변경 시 이미지 재빌드 유도
+      - ./pyproject.toml:/app/pyproject.toml # 루트의 toml 파일 변경 시 이미지 재빌드 유도
+    depends_on:
+      - db_main_service
+      - db_data_service
+      - redis_service
+    restart: unless-stopped
+
+  scheduler:
+    build:
+      context: ./app/comfort_commit # D:\comfort_commit\app 디렉토리 사용
+      dockerfile: Dockerfile
+    container_name: comfort_commit_scheduler
+    command: sh -c "echo '0 3 * * 1 poetry run python /app/Comfort_commit/utils/move_data.py' > /etc/crontab && crond -f -d 8"
+    environment:
+      # 내부 Docker 네트워크를 통해 각 서비스의 실제 컨테이너 포트로 접근
+      - MAIN_DB_URL=postgresql://chan:1234@main_db:5432/commit
+      - DATA_DB_URL=postgresql://chan:1234@data_db:5432/commit_data
+      # REDIS_URL도 필요하다면 추가
+    volumes:
+      - ./app:/app # 스케줄러도 앱 코드 접근 필요 시
+    depends_on:
+      - main_db
+      - data_db
+    restart: unless-stopped
+
+# volumes: # 호스트 경로 직접 마운트 사용 시, 이 부분은 삭제하거나 주석 처리합니다.
+#   pgdata_main:
+#   pgdata_data:

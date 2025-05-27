@@ -1,0 +1,297 @@
+📦 /                         # 최상위 프로젝트 루트
+├── DB/                     # 🗃️ DB 관련 전체 모듈
+│   ├── cache/              # 🔄 파싱 캐시 및 로컬 DB
+│   │   ├── dynamo_cache.db     # Dynamo 캐시 테스트용
+│   │   └── parse.db            # 파싱 결과 저장
+│   ├── data/               # 📂 분석 데이터 저장소 (예: 결과 CSV, 임시 파일)
+│   │   ├── data/               # 원시 데이터
+│   │   └── main/               # 정제된 데이터
+│   ├── schema/             # 🏛️ 전체 RDB 스키마 (PostgreSQL 기준)
+│   │   ├── 01_user/            # 사용자 모듈
+│   │   ├── 02_llm/             # LLM 호출 로그/키 관리
+│   │   ├── 03_plan_reward/     # 요금제 및 리워드
+│   │   ├── 04_repo/            # 레포/코드 스냅샷/커밋 정보
+│   │   ├── 05_customization_and_rules/  # 분석 규칙/커밋 컨벤션 등
+│   │   ├── 06_organization_and_team/    # 조직 및 팀 권한
+│   │   ├── 07_integration_and_linking/  # 외부 링크
+│   │   ├── 08_analytics_and_testing/    # 기능 로그, A/B 테스트
+│   │   ├── 09_notification_delivery/    # 알림 전송 기록
+│   │   ├── 00_01_enums_and_types.sql    # 공통 ENUM/타입 정의
+│   │   └── db_tree.txt                  # 전체 스키마 구조 요약
+│   ├── Dockerfile           # DB 컨테이너 정의
+│   ├── embedding_architecture.md # 임베딩 관련 문서
+│   ├── init-db-extensions.sh # pgvector 등 초기 확장자 설치
+│   ├── move_data.py         # 데이터 마이그레이션 스크립트
+│   └── README.md
+
+├── flogi/                   # 🧠 Flogi의 핵심 기능 구현 모듈
+│   ├── config/              # ⚙️ 설정 및 사용자 구성
+│   ├── LLM/                 # 🧠 LLM 라우팅 및 호출
+│   ├── prep/                # 📝 기술 요약, 메시지 프롬프트 구성
+│   ├── scoping/             # 🔍 변경 파일 분석 및 클러스터링
+│   ├── temp/                # 🧊 실행 중간 결과 캐시 (pickle 등)
+│   ├── template/            # 💬 커밋 메시지 스타일별 템플릿
+│   ├── upload/              # ⬆️ 커밋 실행, 알림/아카이브 업로드
+│   ├── utils/               # 🔧 유틸성 모듈 (비용, 경로, 캐시 등)
+│   ├── Dockerfile           # flogi 서비스 빌드용 도커파일
+│   ├── README.md            # flogi 코드 설명
+│   └── run_all.py           # ▶️ 전체 흐름 실행 진입점
+
+├── log/                     # 📊 로그 저장소
+│   ├── loki/                # 📈 Loki 설정 및 로그 스트리밍
+│   │   └── config.yaml
+│   ├── llm_call.jsonl       # LLM 호출 로그
+│   └── log.py               # 커스텀 로그 처리 유틸
+
+├── test/                    # 🧪 테스트/연동 확인 모듈
+│   └── check_err.py         # Slack/Git/LLM 연결 확인
+
+├── Web/                     # 🌐 웹 인터페이스 (FastAPI 기반)
+│   ├── api/                 # RESTful API 라우터 정의
+│   ├── exceptions/          # 사용자 정의 예외 처리
+│   ├── models/              # ORM 기반 DB 모델
+│   ├── schemas/             # pydantic 기반 요청/응답 스키마
+│   ├── services/            # 내부 서비스 로직 처리
+│   ├── templates/           # Jinja2 HTML 템플릿
+│   ├── config.py            # FastAPI 설정
+│   ├── db.py                # DB 연결 세션 정의
+│   ├── server.py            # FastAPI 진입점 (uvicorn 실행)
+│   └── __init__.py
+
+├── .env                     # 🌱 환경 변수 파일
+├── .env.example             # 예시용 .env 템플릿
+├── .gitignore
+├── docker-compose.yml       # 🐳 전체 서비스 컨테이너 구성
+├── Flogi_4invest.md          # 📄 투자 제안서
+├── LICENSE
+├── poetry.lock
+├── privacy.txt              # 개인정보 처리방침 (예정)
+├── pyproject.toml           # 📦 프로젝트 메타 및 의존성
+├── README.md
+└── structure.txt            # 폴더 구조 설명 텍스트
+|-- 00_DB
+    |-- data_only
+    |-- main
+        |-- cache
+            |-- dynamo_cache.db
+            |-- parse.db
+        |-- schema
+            |-- 01_user
+                |-- 01_info.sql
+                |-- 02_oauth.sql
+                |-- 03_session.sql
+                |-- 04_noti_pref.sql
+                |-- 05_noti_stat.sql
+                |-- 06_device_profile.sql
+                |-- 07_secret.sql
+                |-- 08_feedback_log.sql
+                |-- 09_action_log.sql
+                |-- 10_del_req.sql
+            |-- 02_llm
+                |-- 01_key_config.sql
+                |-- 02_request_log.sql
+            |-- 03_plan_reward
+                |-- 01_plan.sql
+                |-- 02_history.sql
+                |-- 03_reward_log.sql
+            |-- 04_repo
+                |-- 01_repo_main
+                    |-- 01_main.sql
+                    |-- 02_connections.sql
+                    |-- 03_access_permissions.sql
+                |-- 02_code_snapshots
+                    |-- 01_code_snapshots.sql
+                    |-- 02_dir_structures.sql
+                    |-- 03_file_diff_fragmt.sql
+                |-- 03_files
+                    |-- 01_identities.sql
+                    |-- 02_snapshot_inst.sql
+                    |-- 03_analysis_metrics.sql
+                |-- 04_code_elements
+                    |-- 01_elements_identities.sql
+                    |-- 02_elements_snapshot_inst.sql
+                    |-- 03_elements_relations.sql
+                    |-- 04_elements_embeddings.sql
+                |-- 05_commit_gen
+                    |-- 01_gen_requests.sql
+                    |-- 02_gen_contents.sql
+                    |-- 03_finalized_commits.sql
+                    |-- 04_scoping_results.sql
+                    |-- 05_gen_description.sql
+                    |-- 06_input_context_details.sql
+                |-- 00_04_enums_and_types.sql
+                |-- repo.sql
+            |-- 05_customization_and_rules
+                |-- 00_05_enums_and_types.sql
+                |-- 01_analysis_rule_configs.sql
+                |-- 02_commit_conventions.sql
+                |-- 03_commit_conventions_conditions.sql
+                |-- 04_commit_conventions_actions.sql
+                |-- 05_analysis_ignore_patterns.sql
+            |-- 06_organization_and_team
+                |-- 00_06_enums_and_types.sql
+                |-- 01_orgs.sql
+                |-- 02_teams.sql
+                |-- 03_team_memberships.sql
+                |-- 04_team_repository_access.sql
+            |-- 07_integration_and_linking
+                |-- 01_external_entity_links.sql
+            |-- 08_analytics_and_testing
+                |-- 00_analytics_enums_and_types.sql
+                |-- 01_feature_usage_logs.sql
+                |-- 02_ab_tests_main.sql
+                |-- 03_ab_test_variants.sql
+                |-- 04_ab_test_user_assignments.sql
+                |-- 05_ab_test_event_metrics.sql
+            |-- 09_notification_delivery
+                |-- 01_notification_delivery_logs.sql
+            |-- 00_01_enums_and_types.sql
+            |-- db_tree.txt
+    |-- Dockerfile
+    |-- init-db-extensions.sh
+    |-- move_data.py
+    |-- README.md
+|-- 00_log
+    |-- loki
+        |-- config.yaml
+    |-- Dockerfile
+    |-- llm_call.jsonl
+    |-- log.py
+    |-- README.md
+|-- 01_Web
+    |-- api
+        |-- auth.py
+        |-- commit.py
+        |-- feedback.py
+        |-- plan.py
+        |-- user.py
+    |-- exceptions
+        |-- auth_exceptions.py
+    |-- models
+        |-- activity_model.py
+        |-- auth_model.py
+        |-- billing_model.py
+        |-- commit_model.py
+        |-- llm_model.py
+        |-- notification_model.py
+        |-- __init__.py
+    |-- schemas
+        |-- auth_schema.py
+        |-- commit_schema.py
+        |-- feedback_schema.py
+        |-- plan_schema.py
+        |-- user_schema.py
+    |-- services
+        |-- auth_service.py
+        |-- commit_services.py
+        |-- log_services.py
+        |-- plan_services.py
+        |-- security.py
+    |-- templates
+        |-- dashboard.html
+        |-- index.html
+        |-- login.html
+        |-- plan.html
+        |-- review_commit.html
+        |-- signup.html
+    |-- config.py
+    |-- db.py
+    |-- Dockerfile
+    |-- README.md
+    |-- server.py
+    |-- user_config.yml
+    |-- __init__.py
+|-- 02_env_check
+    |-- 00_check_DB.py
+    |-- 01check_trigger.py
+    |-- 02_check_oauth.py
+    |-- 03_check_git_action.py
+    |-- 04_check_platform.py
+    |-- check_err.py
+|-- 03_describe
+    |-- 01_scoping
+        |-- config
+            |-- feature.json
+            |-- weight.json
+        |-- 00_get_data_from_DB.py
+        |-- 01_listup_file.py
+        |-- 02_find_import_connection.py
+        |-- 03_listup_fx.py
+        |-- 04_ast_extract.py
+        |-- 05_ast_clustering.py
+        |-- 06_embedding_fx.py
+        |-- 07_embed_clustering.py
+        |-- 08_upload_to_DB.py
+    |-- 02_prompt_gen
+        |-- 01_summary_readme.py
+        |-- 02_dir_structure.py
+        |-- 03_scoped_fx.py
+        |-- 04_gen_describe_prompt.py
+        |-- 05_upload_to_DB.py
+    |-- Dockerfile
+    |-- path.py
+    |-- README.md
+|-- 04_06_LLM
+    |-- llm_exec
+        |-- calc_cost.py
+        |-- llm_decorator.py
+        |-- llm_manager.py
+        |-- llm_router.py
+    |-- model
+        |-- llama4-maverick-instruct-basic.py
+        |-- llama4-scout-instruct-basic.py
+    |-- Dockerfile
+    |-- hyper_parameter.json
+    |-- README.md
+|-- 05_mk_msg
+    |-- template
+        |-- en
+            |-- doc_writing.txt
+            |-- internal.txt
+            |-- internal_detail.txt
+            |-- solo_detail.txt
+            |-- team_proj.txt
+        |-- ko
+            |-- doc_writing.txt
+            |-- internal.txt
+            |-- internal_detail.txt
+            |-- solo_detail.txt
+            |-- team_proj.txt
+    |-- 00_get_data_from_DB.py
+    |-- 01_dir_structure.py
+    |-- 02_summary_readme.py
+    |-- 03_fx_describe.py
+    |-- 04_latest_commit.py
+    |-- 05_diff.py
+    |-- 06_gen_msg_prompt.py
+    |-- 07_upload_to_DB.py
+    |-- Dockerfile
+    |-- README.md
+|-- 07_upload
+    |-- platform_archive
+        |-- notion.py
+        |-- slack.py
+    |-- platform_noti
+        |-- discord.py
+        |-- gmail.py
+        |-- kakao.py
+        |-- slack.py
+    |-- upload_exec
+        |-- commit.py
+        |-- upload.py
+        |-- upload_utils.py
+    |-- Dockerfile
+    |-- README.md
+|-- docs
+    |-- embedding_architecture.md
+    |-- Flogi_4invest.md
+    |-- privacy.txt
+    |-- structure.txt
+|-- .env
+|-- .env.example
+|-- .gitignore
+|-- docker-compose.yml
+|-- LICENSE
+|-- poetry.lock
+|-- pyproject.toml
+|-- README.md

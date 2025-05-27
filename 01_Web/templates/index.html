@@ -1,0 +1,8 @@
+<h2>대시보드</h2>
+{% for c in commits %}
+  <div>
+    <strong>{{ c.file_path }}</strong><br/>
+    <p>{{ c.commit_msg }}</p>
+    <a href="/review/{{ c.uuid }}">검토 및 수정</a>
+  </div>
+{% endfor %}
