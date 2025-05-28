@@ -1,0 +1,222 @@
+🗂️ 기술 아키텍처 상세 문서 v1.0
+[1편] /00_core_infra/00_common ~ /01_live_DB/
+
+📁 /00_core_infra/00_common/
+파일	설명	존재 이유
+init-db-extensions.sh	PostgreSQL용 확장 모듈 (uuid-ossp, pgvector 등) 설치 스크립트	DB 이미지 초기화 시 확장 자동 활성화
+move_data.py	Live ↔ Archive DB 간 특정 테이블 단위 데이터 이동 스크립트	장기 보존 및 비용 최적화를 위한 주기적 dump 전용
+
+📁 /00_core_infra/01_live_DB/
+운영 중 발생하는 모든 변경, 커밋, 통계, 권한 등이 기록되는 서비스 실시간 DB 스키마
+구조는 기능 → 도메인 기준으로 총 10개 블록으로 분리
+
+📂 01_user/
+개인 계정, 인증, 세션, 알림 선호, 피드백, 삭제 요청 등 사용자 중심 정보 담당
+
+파일	설명
+00_user_enums_and_types.sql	이메일 타입, 사용자 상태, 인증 상태 등 ENUM 정의
+01_info.sql	사용자 기본 정보: uuid, username, email, oauth 계정 등
+02_oauth.sql	소셜 로그인 인증 연동 내역
+03_session.sql	로그인 세션 (토큰/기기/IP 기반 추적)
+04_noti_pref.sql	사용자별 알림 수단/타입 허용 여부
+05_noti_stat.sql	카카오 알림 등 발송 현황 카운팅
+06_device_profile.sql	브라우저/OS/기기/위치 정보 저장
+07_secret.sql	AES-GCM 암호화된 JWT Refresh 등 민감 정보 분리 저장
+08_feedback_log.sql	사용자 피드백: 개선요청/에러보고 수집 기록
+09_action_log.sql	RBAC 기반 모든 API 요청/승인 액션 기록
+10_del_req.sql	사용자 삭제 요청 및 GDPR 이행 상태 기록
+
+📂 02_llm/
+파일	설명
+00_llm_enums_and_types.sql	LLM 종류, 모델명, 호출 경로 ENUM 정의
+01_key_config.sql	OpenAI / Claude / Groq 등 키 관리 및 사용 플랜 정보
+02_request_log.sql	실제 LLM 호출 로그 (Prompt, Token 수, 모델명, 응답시간 등)
+
+✅ 목적: 요금제별 사용량/비용 관리 + 모델 A/B 테스트 기반 성능 추적
+
+📂 03_plan_reward/
+파일	설명
+00_plan_enums_and_types.sql	플랜 키, 리워드 종류, 적립 방식 등 ENUM 정의
+01_plan.sql	Free/Basic/Premium/Org 요금제 스펙 및 정책
+02_history.sql	플랜 변경 이력 (trial 종료, 업그레이드 등)
+03_reward_log.sql	추천 코드 입력, 미션 수행 등으로 적립된 알림 횟수 등 로그
+
+📂 04_repo/
+저장소 단위 커밋 정보 저장 구조 – 매우 고밀도 정보 계층
+
+5블럭: repo_main, code_snapshots, files, code_elements, commit_gen
+
+1 헤더: repo.sql
+
+ENUM: 00_repo_enums_and_types.sql
+
+구조적으로 GitHub의 commit tree 구조와 유사하며, LLM이 읽을 수 있는 구조로 최적화됨
+📂 /04_repo/
+핵심 철학:
+Flogi의 모든 **“작업 맥락 기록”**은 repo 계층이 담당합니다.
+실제 커밋을 이루는 구성 요소 (파일, 함수, 관계, 설명, 메시지)를 Git처럼 저장하지만 LLM이 분석하기 좋게 설계되어 있습니다.
+
+🧱 계층 구성
+pgsql
+복사
+편집
+04_repo/
+├── 01_repo_main/               ← 저장소 단위의 핵심 정보
+├── 02_code_snapshots/          ← 시점별 디렉토리·파일 구조
+├── 03_files/                   ← 파일 개별의 변화 인식·분석
+├── 04_code_elements/           ← 함수·클래스 등 코드 요소 단위
+├── 05_commit_gen/              ← 커밋 메시지 생성 기록
+├── 00_repo_enums_and_types.sql
+└── repo.sql                    ← 전체 repo block을 조립하는 통합 선언
+📁 01_repo_main/
+파일	설명
+01_main.sql	repo_uuid, git_url, 생성일, 팀 연결 등 저장소 메타 정보
+02_connections.sql	repo 간 관계 정의 (forked from, linked to 등)
+03_access_permissions.sql	팀/개인 단위의 읽기/쓰기/분석 권한 정의
+
+📌 LLM 모델이 “누가 무엇을 수정했는지” 이해하기 위한 기초 토대
+
+📁 02_code_snapshots/
+파일	설명
+01_code_snapshots.sql	특정 커밋 시점의 코드 상태 snapshot (hash, 타임스탬프 포함)
+02_dir_structures.sql	snapshot 시점의 디렉토리 구조 – 디렉토리 트리 정보
+03_file_diff_fragmt.sql	파일 단위의 diff fragment → 주요 변경 범위 자동 추출 목적
+
+✅ Scoping 모듈의 입력값 중 하나가 바로 file_diff_fragmt
+
+📁 03_files/
+파일	설명
+01_identities.sql	고유 파일 식별자 (hash, 경로, 최초 등장 시점 등)
+02_snapshot_inst.sql	snapshot과 파일의 연결 → 어떤 파일이 어떤 시점에 등장했는지
+03_analysis_metrics.sql	파일 단위 분석 메타: 길이, 토큰 수, 변화 횟수 등 정량적 특성 기록
+
+📁 04_code_elements/
+파일	설명
+01_elements_identities.sql	함수/클래스 등 코드 요소의 uuid, 소속 파일 등
+02_elements_snapshot_inst.sql	특정 snapshot에 어떤 함수들이 있었는지
+03_elements_relations.sql	호출 관계, 의존 관계 등 함수 간 관계망
+04_elements_embeddings.sql	BERT/code2vec 등으로 생성된 임베딩 저장 – pgvector 사용
+
+✅ elements_relations + elements_embeddings = "의미론적 diff"의 핵심
+
+📁 05_commit_gen/
+파일	설명
+01_gen_requests.sql	커밋 생성을 요청한 시점의 요청 정보 (uuid, repo, user, trigger 등)
+02_gen_contents.sql	LLM이 생성한 커밋 메시지 초안들 저장 (버전별로 여러 개 가능)
+03_finalized_commits.sql	사용자가 승인한 최종 메시지
+04_scoping_results.sql	scope 분석 결과 (핵심 함수 목록, 관련 파일 등)
+05_gen_description.sql	기술 설명서 LLM 결과 저장본
+06_input_context_details.sql	Prompt 생성 시 사용된 input context snapshot (토큰화 포함)
+
+📄 00_repo_enums_and_types.sql
+변경 타입 (added, modified, deleted)
+
+언어/파일 타입 ENUM
+
+Commit 목적 ENUM (refactor, bugfix, feature 등)
+
+📄 repo.sql
+위의 모든 테이블을 SCHEMA flogi_repo 아래로 통합 선언
+
+COMMENT ON SCHEMA 포함: 모듈 간 경계 설명용 주석
+
+🧠 요약 판단
+영역	판단
+설계 목표	Git 구조 + LLM 분석 최적화
+고유성	함수·파일·커밋·요약 모두 uuid 기반, pgvector 연계
+활용 지점	Scoping, Describe, MkMsg, Dashboard에서 모두 활용
+확장 가능성	향후 AST 저장, 코드 리팩토링 이력까지 확장 가능 구조
+📂 /05_customization_and_rules/
+커밋 생성 규칙 및 사용자 정의 분석 정책을 담는 “규칙 기반 자동화 설정 계층”
+
+파일	설명
+00_custom_enums_and_types.sql	룰 타입, 분석 조건 ENUM 정의
+01_analysis_rule_configs.sql	사용자 또는 팀이 정의한 분석 규칙 설정값
+02_commit_conventions.sql	기본 커밋 규칙 정의 (ex: Conventional Commit, Gitmoji 등)
+03_commit_conventions_conditions.sql	커밋 메시지 검증 조건식 (ex: prefix 필수, scope 포함 여부 등)
+04_commit_conventions_actions.sql	위 조건 위반 시 취할 액션 (차단/경고/자동수정)
+05_analysis_ignore_patterns.sql	분석 제외 대상 (파일 패턴, 디렉토리명, 정규식 등) 목록화
+
+📌 이 영역은 향후 “팀별 룰 커스터마이징” 또는 “시장에서 규칙 모듈 판매” 가능성까지 내포
+
+📂 /06_organization_and_team/
+팀 단위 협업, 조직 권한 구조 정의 계층
+조직 → 팀 → 팀원 → 권한 → 저장소 연결 구조로 계층화
+
+파일	설명
+00_org_enums_and_types.sql	조직 타입, 팀 권한 레벨 ENUM
+01_orgs.sql	조직 단위 정의 (도메인, 계약 상태, 활성 여부 등 포함)
+02_teams.sql	조직 소속 팀 정의 (이름, 설명, 접근 범위 등)
+03_team_memberships.sql	유저와 팀 간 1:N 관계 정의 (역할 포함)
+04_team_repository_access.sql	팀이 접근 가능한 저장소 및 권한(R/W/A 등) 명시
+
+✅ RBAC(Role-Based Access Control) + 저장소 스코프 권한 관리 기반의 구조
+
+📂 /07_integration_and_linking/
+Flogi 외부 시스템과의 연결 (Notion, GitHub, Slack 등)을 관리하는 “외부 링크 관리 계층”
+
+파일	설명
+01_external_entity_links.sql	사용자/조직 기준 외부 시스템 연결 정보 (서비스명, 인증 토큰, 상태 등 포함)
+
+이 구조를 통해 외부 플랫폼 연동 기록 + 토큰 갱신 여부 + 사용 로그 연계까지 가능함
+슬랙 자동 승인, 노션 기술 문서 업로드 등도 이 테이블 기반으로 연결됨
+
+📌 이 3개 모듈의 공통 철학
+핵심 키워드	설명
+Policy First	기능보다 정책 중심으로 동작 제어
+B2B 협업 구조 대응	팀/조직/권한/룰 → 확장 가능한 SaaS 모델 대응
+LLM 행동 통제 가능	커밋 메시지, 자동화 분석 등의 결과를 정책 기반으로 제어 가능
+
+🧠 판단 요약
+항목	판단
+목적 명확성	✅ 각 계층의 기능 경계 매우 명확
+데이터 중심 설계	✅ ENUM + RULE + ACTION → 선언적 통제 기반
+활용 시점	커밋 메시지 생성, 사용자 대시보드, 관리자 콘솔 전부 활용 가능
+확장 가능성	✅ “사용자 정의 룰 마켓”까지 확장 여지 존재
+📂 /08_analytics_and_testing/
+사용자 활동, 기능 사용 내역, A/B 테스트 결과 등을 기록하여
+“UX 개선, 기능 실험, 플랜별 분석 최적화”를 위한 메타데이터 저장소
+
+파일	설명
+00_analytics_enums_and_types.sql	실험 타입, 기능 종류, 이벤트 분류 등 ENUM
+01_feature_usage_logs.sql	기능 단위 사용 로그 (ex: 커밋 생성 횟수, 요약 호출 등)
+02_ab_tests_main.sql	A/B 테스트 메타정보 (이름, 목적, 상태 등)
+03_ab_test_variants.sql	테스트별 분기군 (ex: control, variant A, B)
+04_ab_test_user_assignments.sql	사용자와 분기군의 연결 기록 (랜덤할당 포함)
+05_ab_test_event_metrics.sql	이벤트 발생량, 클릭률, 결과 지표 등 기록
+
+✅ A/B 테스트 결과 + 행동 기반 요금제 전환 추적 등 핵심 지표 기반 설계
+📌 이 계층은 Flogi의 “데이터 기반 PM” 전략을 가능하게 하는 핵심 구조입니다.
+
+📂 /09_notification_delivery/
+알림 전송 로그 및 전송 상태 추적
+
+파일	설명
+01_notification_delivery_logs.sql	각 알림(Slack/Kakao/Gmail 등)의 수신자, 전송 시각, 성공 여부, 실패 원인 등 기록
+
+Scoping → Describe → Upload → Slack DM
+이 모든 전송 흐름이 trace_uuid와 함께 기록됨
+
+📁 /00_core_infra/02_archive_DB/
+핵심 목적: 장기 보존, LLM 학습 데이터 백업, Storage 비용 최적화
+
+구조	설명
+01_analytics_and_testing/	live_DB와 동일 구조 (log 복제 대상)
+03_finalized_commits.sql	승인된 커밋 메시지만 보존 (중간 초안은 삭제 가능)
+04_elements_embeddings.sql	vector 임베딩은 대용량화되므로 archive에 따로 저장
+05_gen_description.sql	기술 설명서 생성 결과 백업 – 향후 LLM 학습 재료로 활용 가능
+
+🧠 archive_DB는 “서비스의 두 번째 기억장치”
+역할	상세 설명
+비용 최적화	LLM 임베딩 벡터, 초안 커밋 등 고용량 기록을 이관
+보안 격리	live_DB와 분리하여 유저 개인정보로부터 기술 데이터 분리
+학습 자산화	전문가 수정본, 커밋 의도 등 향후 SFT용 학습 셋 확보 가능
+
+💡 전체 판단 요약
+계층	전략적 위치
+analytics_and_testing	사용 데이터 기반 기능 개선 및 실험 설계 중심
+notification_delivery	전송 성공률 추적 및 사용자 경험 신뢰성 확보
+archive_DB	LLM과 데이터 중심 SaaS의 기반 → 미래 수익 자산화 가능
+
+📌 이 계층부터는 Flogi의 본질이 “단순 자동화”가 아닌
+**“의도 기록 + 사용 흐름 분석 + 기술 데이터 축적”**이라는 점이 명확하게 드러납니다.

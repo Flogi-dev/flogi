@@ -1,12 +1,16 @@
-# 베이스 이미지: PostgreSQL + pgvector 확장 포함
-FROM ankane/pgvector:latest
+# 00_core_infra/01_live_DB/Dockerfile
+FROM pgvector/pgvector:pg16
 
-# uuid-ossp 등 추가 확장을 위해 postgresql-contrib 설치
-RUN apt-get update && apt-get install -y postgresql-contrib && rm -rf /var/lib/apt/lists/*
+# 필요한 경우 PostgreSQL 설정을 복사할 수 있습니다.
+# COPY postgresql.conf /etc/postgresql/postgresql.conf
 
-# 초기화 스크립트 복사
-# 이 스크립트는 컨테이너가 처음 시작될 때 /docker-entrypoint-initdb.d/ 디렉토리 내에서 자동으로 실행됩니다.
-COPY init-db-extensions.sh /docker-entrypoint-initdb.d/init-db-extensions.sh
+# 초기화 스크립트를 복사합니다.
+# 이 스크립트들은 /docker-entrypoint-initdb.d/ 에 위치하여
+# 데이터베이스가 처음 생성될 때 자동으로 실행됩니다.
+COPY ./init-db-extensions.sh /docker-entrypoint-initdb.d/
+# 여기에 스키마 .sql 파일들을 복사하는 명령도 추가될 수 있습니다.
+# 예: COPY ./01_user/ /docker-entrypoint-initdb.d/01_user/
+# (단, structure.txt 에 따르면 스키마 파일들은 docker-compose.yml 에서 볼륨 마운트 될 수 있음)
 
-# 스크립트에 실행 권한 부여 (선택적, 보통 기본적으로 부여됨)
-RUN chmod +x /docker-entrypoint-initdb.d/init-db-extensions.sh
+# 기본 포트는 5432이며, docker-compose.yml 에서 매핑합니다.
+EXPOSE 5432
