@@ -1,5 +1,5 @@
 -- =====================================================================================
--- 파일: 00_common_functions_and_types.sql
+-- 파일: 00_user_enums_and_types.sql
 -- 설명: 데이터베이스 스키마 전체에서 공통적으로 사용되는 PostgreSQL 함수 및 ENUM 타입을 정의합니다.
 --       이 스크립트는 다른 모든 테이블 생성 스크립트보다 먼저 실행되어야 합니다.
 -- 대상 DB: PostgreSQL Primary RDB
@@ -16,6 +16,170 @@
 --   CREATE TRIGGER trg_set_updated_at_<table_name>
 --   BEFORE UPDATE ON <table_name>
 --   FOR EACH ROW EXECUTE FUNCTION set_updated_at();
+-- deliverables/00_common_enums.sql
+-- (또는 기존 00_DB/main/schema/00_01_enums_and_types.sql 파일에 병합/수정)
+-- Common ENUM types for Flogi DB
+
+-- =====================================================================================
+-- 기존 00_01_enums_and_types.sql 내용 중 일부를 가져오고,
+-- README.md 6장 ("사용자 요금제 & 기능 분기") 내용과 비교하여 plan_key_enum을 재정의/확인합니다.
+-- 다른 ENUM들도 필요에 따라 이 파일에 추가하거나 기존 파일을 수정합니다.
+-- =====================================================================================
+
+-- 사용자 계정 유형 ENUM (기존 정의 유지 또는 필요시 수정)
+DO $$ BEGIN
+    CREATE TYPE user_account_type_enum AS ENUM (
+        'individual', -- 개인 사용자
+        'organization_member', -- 조직 멤버
+        'admin',      -- 시스템 관리자
+        'guest'       -- 게스트 (제한적 접근)
+    );
+EXCEPTION
+    WHEN duplicate_object THEN null;
+END $$;
+COMMENT ON TYPE user_account_type_enum IS '사용자의 계정 유형을 정의합니다. (개인, 조직 멤버, 관리자, 게스트 등) <-READ-ME 매핑> (user_config.yml 또는 시스템 정책과 연관)';
+
+-- 요금제 키 ENUM (Comfort Commit 시스템 설계서 README.md 6장 기반으로 재검토 및 일치)
+-- README.md 6장에 명시된 요금제: Free, Basic, Premium, Organization. Trial은 상태로 관리될 수도 있음.
+-- Enterprise는 일반적으로 존재하나 README에는 없음. 여기서는 README 기반으로 정의.
+DO $$ BEGIN
+    CREATE TYPE plan_key_enum AS ENUM (
+        'free',       -- 무료 요금제
+        'basic',      -- 기본 유료 요금제
+        'premium',    -- 고급 유료 요금제
+        'organization' -- 조직/팀 요금제
+        -- 'enterprise', -- 엔터프라이즈 요금제 (필요시 추가)
+        -- 'trial'       -- 평가판 (별도 플래그 is_trial_active 등으로 관리 권장)
+    );
+EXCEPTION
+    WHEN duplicate_object THEN null;
+END $$;
+COMMENT ON TYPE plan_key_enum IS '시스템에서 제공하는 요금제의 고유 키 값입니다. (무료, 기본, 프리미엄, 조직 등) <-READ-ME 매핑> (Comfort Commit 시스템 설계서 6장 사용자 요금제 & 기능 분기)';
+
+-- 사용자 계정 상태 ENUM (기존 정의 유지 또는 필요시 수정)
+DO $$ BEGIN
+    CREATE TYPE user_account_status_enum AS ENUM (
+        'pending_verification', -- 이메일 등 인증 대기
+        'active',               -- 활성 상태
+        'suspended',            -- 일시 정지 (관리자 또는 시스템에 의해)
+        'deactivated',          -- 사용자 요청에 의한 비활성화 (탈퇴와 다름)
+        'deletion_pending',     -- 삭제 요청 접수 및 처리 대기 중
+        'deleted'               -- 삭제 완료 (논리적 삭제 또는 PII 제거 상태)
+    );
+EXCEPTION
+    WHEN duplicate_object THEN null;
+END $$;
+COMMENT ON TYPE user_account_status_enum IS '사용자 계정의 현재 상태를 나타냅니다. (인증 대기, 활성, 일시정지, 비활성화, 삭제 대기, 삭제됨 등) <-READ-ME 매핑> (시스템 정책과 연관)';
+
+-- 사용자 탈퇴 요청 상태 ENUM (기존 정의 유지 또는 필요시 수정)
+DO $$ BEGIN
+    CREATE TYPE deletion_request_status_enum AS ENUM (
+        'requested',            -- 탈퇴 요청 접수
+        'pending_confirmation', -- 사용자 확인 대기 (예: 이메일 인증)
+        'confirmed',            -- 사용자 확인 완료, 처리 대기
+        'processing',           -- 삭제/익명화 처리 중
+        'completed',            -- 처리 완료
+        'cancelled',            -- 사용자에 의해 요청 취소
+        'failed'                -- 처리 실패
+    );
+EXCEPTION
+    WHEN duplicate_object THEN null;
+END $$;
+COMMENT ON TYPE deletion_request_status_enum IS '사용자 계정 탈퇴 요청의 처리 단계를 나타냅니다. <-READ-ME 매핑> (GDPR/CCPA 삭제권 처리 플로우와 연관)';
+
+-- (신규 또는 수정 제안) Secret 타입 ENUM (user_secret 테이블용)
+DO $$ BEGIN
+    CREATE TYPE user_secret_type_enum AS ENUM (
+        'llm_api_key',          -- 외부 LLM 서비스 API 키
+        'oauth_refresh_token',  -- 외부 서비스 OAuth 리프레시 토큰
+        'oauth_access_token',   -- 외부 서비스 OAuth 액세스 토큰 (단기 저장 시)
+        'slack_bot_token',      -- Slack 봇 토큰
+        'slack_user_token',     -- Slack 사용자 토큰 (특정 권한)
+        'github_app_installation_token', -- GitHub 앱 설치 토큰
+        'internal_service_secret' -- Flogi 내부 서비스 간 인증용 비밀 값
+    );
+EXCEPTION
+    WHEN duplicate_object THEN null;
+END $$;
+COMMENT ON TYPE user_secret_type_enum IS 'user_secret 테이블에서 관리하는 비밀 정보의 유형을 정의합니다. (LLM API 키, OAuth 토큰 등) <-READ-ME 매핑> (보안 정책과 연관)';
+
+-- (신규 또는 수정 제안) Secret 상태 ENUM (user_secret 테이블용)
+DO $$ BEGIN
+    CREATE TYPE user_secret_status_enum AS ENUM (
+        'active',               -- 활성 상태, 사용 가능
+        'revoked_by_user',      -- 사용자에 의해 해지됨
+        'revoked_by_provider',  -- 제공자(또는 시스템)에 의해 해지됨
+        'expired',              -- 만료됨
+        'pending_rotation',     -- 키 회전 대기 중
+        'compromised'           -- 보안 침해 의심/확인
+    );
+EXCEPTION
+    WHEN duplicate_object THEN null;
+END $$;
+COMMENT ON TYPE user_secret_status_enum IS 'user_secret 테이블에 저장된 비밀 정보의 현재 상태를 나타냅니다. <-READ-ME 매핑> (보안 정책과 연관)';
+
+
+-- (신규) 피드백 타입 ENUM (user_feedback_log 테이블용)
+DO $$ BEGIN
+    CREATE TYPE feedback_type_enum AS ENUM (
+        'bug_report',           -- 버그 제보
+        'feature_request',      -- 기능 요청
+        'general_comment',      -- 일반 의견
+        'ux_issue',             -- 사용자 경험(UX) 문제
+        'praise',               -- 칭찬
+        'other'                 -- 기타
+    );
+EXCEPTION
+    WHEN duplicate_object THEN null;
+END $$;
+COMMENT ON TYPE feedback_type_enum IS '사용자 피드백의 유형을 정의합니다. <-READ-ME 매핑> (서비스 개선 프로세스와 연관)';
+
+-- (신규) 알림 이벤트 타입 ENUM (user_notification_pref 테이블 JSONB 내부용)
+DO $$ BEGIN
+    CREATE TYPE notification_event_type_enum AS ENUM (
+        'commit_generation_success',
+        'commit_generation_failure',
+        'commit_approval_requested',
+        'commit_approved',
+        'commit_rejected',
+        'system_maintenance_scheduled',
+        'system_maintenance_completed',
+        'new_feature_released',
+        'plan_limit_approaching',
+        'plan_limit_reached',
+        'reward_granted',
+        'security_alert'
+        -- 추가적인 알림 이벤트 타입들
+    );
+EXCEPTION
+    WHEN duplicate_object THEN null;
+END $$;
+COMMENT ON TYPE notification_event_type_enum IS '사용자에게 발송될 수 있는 알림의 이벤트 유형을 정의합니다. user_notification_pref의 JSONB 필드 내에서 사용됩니다. <-READ-ME 매핑> (알림 정책과 연관)';
+
+-- (신규) 알림 채널 ENUM (user_notification_pref 테이블 JSONB 내부용 및 notification_delivery_logs용)
+DO $$ BEGIN
+    CREATE TYPE notification_channel_enum AS ENUM (
+        'email',
+        'slack',
+        'kakao',          -- 카카오톡 알림톡 등
+        'discord',
+        'in_app_web',     -- 서비스 내 웹 알림
+        'mobile_push'     -- 모바일 앱 푸시 알림
+    );
+EXCEPTION
+    WHEN duplicate_object THEN null;
+END $$;
+COMMENT ON TYPE notification_channel_enum IS '알림이 발송될 수 있는 채널의 종류를 정의합니다. <-READ-ME 매핑> (07_upload/noti_platform/ 참고)';
+
+
+/*
+설계 근거:
+1. 지시서의 ENUM 관련 규칙 및 README.md 6장과의 일치성 요구 반영.
+2. 기존 ENUM 타입(user_account_type_enum, plan_key_enum 등)을 검토하고, `plan_key_enum`은 README.md 내용을 우선하여 재정의 (만약 다르다면).
+3. `user_secret` 테이블 리팩토링을 위해 `user_secret_type_enum` 및 `user_secret_status_enum` 추가 제안.
+4. `user_feedback_log`의 `feedback_type` 및 `user_notification_pref`의 `alert_configurations` JSONB 내부에서 사용될 `notification_event_type_enum`, `notification_channel_enum` 추가 제안.
+5. `DO $$ BEGIN ... EXCEPTION WHEN duplicate_object THEN null; END $$;` 구문을 사용하여 멱등성(idempotency)을 확보하여 스크립트 재실행 시 오류 방지.
+*/
 CREATE OR REPLACE FUNCTION set_updated_at()
 RETURNS TRIGGER AS $$
 BEGIN

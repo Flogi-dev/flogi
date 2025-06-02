@@ -1,7 +1,7 @@
-# Comfort Commit 투자 제안서
+# Flogi 투자 제안서
 
 **[제안일: 2025년 5월 24일]**
-**[제안자: (보스 성함)]**
+**[제안자: (박찬)]**
 
 ## 목차
 [1. 제안 개요](#section1)
@@ -12,7 +12,7 @@
 
 - [2.2. 시장 기회](#section4)
 
-[3. Comfort Commit 솔루션 소개](#section5)
+[3. Flogi 솔루션 소개](#section5)
 
 - [3.1. 핵심 가치 및 비전](#section6)
 
@@ -44,11 +44,11 @@
 
 [8. 결론](#section20)
 
-[9. 참고 자료: Cc, 일반 회사원 업무 상황 예시](#section21)
+[9. 참고 자료: Flogi, 일반 회사원 업무 상황 예시](#section21)
 
 - [9.1. 문제 상황: "기억과의 싸움, 반복되는 비효율"](#section22)
 
-- [9.2. Cc의 해결책: "AI 비서가 알아서 정리하고 제안"](#section23)
+- [9.2. Flogi의 해결책: "AI 비서가 알아서 정리하고 제안"](#section23)
 
 - [9.3. 기대 효과: "업무 효율성 증대 및 스트레스 감소"](#section24)
 
@@ -62,10 +62,10 @@
 
 ## 1. 제안 개요 (Executive Summary)
 
-- 본 제안은 인공지능(AI) 기반의 혁신적인 개발자용 "Commit Message" (이하 "커밋") 자동화 및 기록 관리 시스템 "Comfort Commit"(이하 "Cc")의 초기 개발 및 시장 진입을 위한 Seed 투자 유치를 목적으로 합니다.
+- 본 제안은 인공지능(AI) 기반의 혁신적인 개발자용 "Commit Message" (이하 "커밋") 자동화 및 기록 관리 시스템 "Flogi"의 초기 개발 및 시장 진입을 위한 Seed 투자 유치를 목적으로 합니다.
 
-- Cc는 단순한 편의 도구를 넘어, 개발자의 컨텍스트 손실 문제를 해결하고 커밋 품질을 향상시키며, 서비스 운영 과정에서 독점적이고 가치 높은 LLM(Large Language Model) 학습 데이터를 자동으로 생성하는 독창적인 시스템입니다. 
-- 본 투자는 MVP(Minimum Viable Product) 고도화, 초기 사용자 확보, 그리고 데이터 가치 입증을 통해 Cc의 폭발적인 성장 잠재력을 실현하는 데 사용될 것입니다.
+- Flogi는 단순한 편의 도구를 넘어, 개발자의 컨텍스트 손실 문제를 해결하고 커밋 품질을 향상시키며, 서비스 운영 과정에서 독점적이고 가치 높은 LLM(Large Language Model) 학습 데이터를 자동으로 생성하는 독창적인 시스템입니다. 
+- 본 투자는 MVP(Minimum Viable Product) 고도화, 초기 사용자 확보, 그리고 데이터 가치 입증을 통해 Flogi의 폭발적인 성장 잠재력을 실현하는 데 사용될 것입니다.
 
 ---
 
@@ -94,7 +94,7 @@
 
 <a name="section5"></a>
 
-## 3. Comfort Commit 솔루션 소개 (Our Solution: Cc)
+## 3. Flogi 솔루션 소개 (Our Solution: Flogi)
 
 <a name="section6"></a>
 
@@ -165,20 +165,20 @@
 
 ## 5. 전략적 데이터 자산 및 미래 가치 (Strategic Data Asset & Future Value)
 
-##### Cc는 서비스 운영 과정에서 독점적이고 고도화된 데이터 자산을 생성하는 시스템이며, 이는 AI 기술의 핵심 경쟁력으로 작용하여 막대한 잠재적 가치를 지닙니다.
+##### Flogi는 서비스 운영 과정에서 독점적이고 고도화된 데이터 자산을 생성하는 시스템이며, 이는 AI 기술의 핵심 경쟁력으로 작용하여 막대한 잠재적 가치를 지닙니다.
 
 <a name="section14"></a>
 
 #### 5.1. 고품질 LLM 학습 데이터 자동 생성 (Automated Generation of High-Quality LLM Training Data)
 
-* Cc의 핵심 기능 중 하나인 "AI 생성 초안에 대한 사용자 검토 및 수정" 프로세스는 자연스럽게 고품질의 LLM 학습 데이터를 축적합니다.
+* Flogi의 핵심 기능 중 하나인 "AI 생성 초안에 대한 사용자 검토 및 수정" 프로세스는 자연스럽게 고품질의 LLM 학습 데이터를 축적합니다.
 * 이 데이터는 **(1) 특정 코드 변경이라는 명확한 컨텍스트, (2) AI의 초기 제안, (3) 숙련된 개발자의 최종 수정본, (4) 적용된 스타일/템플릿 정보**를 포함하는 정교한 "Instruction-Output Pair" 형태를 갖습니다. 이러한 양질의 데이터는 LLM의 특정 작업 수행 능력 향상에 기여할 수 있으며, 생성된 데이터의 구체적인 질과 다양성, 일반화 가능성은 향후 심층 분석 및 연구를 통해 평가될 것입니다.[^11]
 
 <a name="section15"></a>
 
 #### 5.2. 데이터의 희소성 및 독점적 가치 (Scarcity and Proprietary Value of Data)
 
-* "특정 코드 변경에 대한 개발자의 의도와 맥락을 반영한 수정 과정"을 담은 데이터는 현재 시장에서 극히 희소하며, Cc는 이러한 데이터를 체계적으로, 대규모로 생산할 수 있는 독창적인 메커니즘을 제공합니다. 이는 유사 서비스 대비 차별화된 경쟁 우위로 작용할 수 있습니다.[^12]
+* "특정 코드 변경에 대한 개발자의 의도와 맥락을 반영한 수정 과정"을 담은 데이터는 현재 시장에서 극히 희소하며, Flogi는 이러한 데이터를 체계적으로, 대규모로 생산할 수 있는 독창적인 메커니즘을 제공합니다. 이는 유사 서비스 대비 차별화된 경쟁 우위로 작용할 수 있습니다.[^12]
 * 특히, 특정 기준(예: 경력, 프로젝트 기여도)으로 필터링된 고급 개발자의 수정 데이터는 AI 모델에게 "전문가의 사고방식"을 학습시킬 수 있는 매우 귀중한 자원이 될 수 있으며, 이러한 전문가 데이터 기반 파인튜닝의 효과는 여러 연구에서 보고되고 있습니다.[^13]
 
 <a name="section16"></a>
@@ -186,7 +186,7 @@
 #### 5.3. 데이터 기반 부가 가치 창출 및 사업 확장성 (Data-Driven Value Creation & Business Scalability)
 
 * 축적된 고품질 데이터는 다음과 같은 추가적인 사업 기회를 창출할 수 있습니다.
-    * **프리미엄 AI 모델 개발**: Cc 데이터를 독점적으로 학습한, 특정 도메인(예: 고신뢰성 코드 요약, 맞춤형 개발 컨설팅)에 특화된 초고성능 LLM 개발 및 서비스 제공.
+    * **프리미엄 AI 모델 개발**: Flogi의 데이터를 독점적으로 학습한, 특정 도메인(예: 고신뢰성 코드 요약, 맞춤형 개발 컨설팅)에 특화된 초고성능 LLM 개발 및 서비스 제공.
     * **데이터 라이선싱**: 타 AI 기업 또는 연구 기관에 정제된 학습 데이터셋을 라이선스 형태로 제공하여 추가 수익 확보. (이는 데이터의 민감성 및 보안 계약을 전제로 함)
     * **개발자 인사이트 리포트**: 익명화 및 집계된 데이터를 기반으로 개발 트렌드, 생산성 패턴, 코드 품질 지표 등에 대한 심층 분석 리포트를 기업 고객에게 제공.
 
@@ -194,11 +194,11 @@
 
 #### 5.4. 선순환적 가치 증대 (Flywheel Effect of Value Accrual)
 
-* 더 많은 사용자가 Cc을 사용할수록 더 많은 고품질 데이터가 축적됩니다.
-* 축적된 데이터는 Cc의 AI 모델을 더욱 정교하게 만들고, 서비스의 핵심 가치를 향상시킵니다.
+* 더 많은 사용자가 Flogi를 사용할수록 더 많은 고품질 데이터가 축적됩니다.
+* 축적된 데이터는 Flogi의 AI 모델을 더욱 정교하게 만들고, 서비스의 핵심 가치를 향상시킵니다.
 * 향상된 서비스는 더 많은 사용자를 유치하고, 이는 다시 데이터의 양과 질을 높이는 선순환 구조를 구축하여 지속적인 경쟁력 강화 및 기업 가치 증대를 이끌어냅니다.
 
-**결론적으로, Cc는 서비스 자체의 직접적인 수익 창출 외에도, AI 시대의 핵심 자원인 "고품질, 맥락 기반 학습 데이터"를 지속적으로 생산하고 축적함으로써 장기적으로 기하급수적인 가치 성장을 기대할 수 있는 독창적인 사업 모델입니다. 이는 단순한 기술적 우위를 넘어, 데이터 경제 시대의 핵심 경쟁력을 확보하는 전략적 투자라 할 수 있습니다.**
+**결론적으로, Flogi는 서비스 자체의 직접적인 수익 창출 외에도, AI 시대의 핵심 자원인 "고품질, 맥락 기반 학습 데이터"를 지속적으로 생산하고 축적함으로써 장기적으로 기하급수적인 가치 성장을 기대할 수 있는 독창적인 사업 모델입니다. 이는 단순한 기술적 우위를 넘어, 데이터 경제 시대의 핵심 경쟁력을 확보하는 전략적 투자라 할 수 있습니다.**
 
 ---
 
@@ -207,25 +207,24 @@
 ## 6. 창업자 및 팀 (Founder & Team)
 
 * **창업자 및 핵심 개발자:** [박찬/Fullstack]
-    * 파이썬 학습 기간 3개월, 본 프로젝트 서비스 설계 및 핵심 기능 구현 착수 3주 만에 현재 수준의 아키텍처와 비전을 구체화한 이력은 창업자의 뛰어난 학습 능력, 강력한 실행력, 문제 해결 능력 및 명확한 비전을 보여주는 사례입니다. 이러한 역량은 프로젝트의 성공적인 초기 개발 및 시장 진입에 중요한 동력이 될 것입니다.[^14]
+    * 저는 제가 제공한 제품이나 서비스가 누군가에게 실제 도움이 되었을 때, 비로소 '살아있다'는 감각을 느꼈습니다. 그 경험은 “더 많은 사람들에게 의미 있는 가치를 제공하는 제품을 직접 만들자”는 목표로 이어졌고, 이는 창업이라는 방향으로 저를 이끌었습니다.
+
+    아이디에이션과 구체화 과정의 끊임없이 병목지점을 마주했고, 단순히 문제를 회피하기보다 그 원인을 깊이 추적하고 근본적인 해결책을 찾고자 노력해왔습니다. 이를 위해 다양한 산업 현장과 교육 분야에서 경험을 쌓으며 사회 문제와 산업 시스템을 관찰하였고, 이는 이후 제품 아이디에이션 및 문제 해결 전략 수립에 큰 밑거름이 되어 현재는 생성형 AI 기반 서비스 기획 및 프롬프트 최적화 프로젝트를 진행하고 있습니다.
+
+    학부 시절에는 창업 동아리를 조직해 초기 프로젝트를 실행해봤으며, 그 과정에서 제 역량의 한계를 체감하고 전문성 확보를 위해 MBA 진학을 목표로 세웠습니다. 동시에 빠르게 발전하는 기술을 직접 경험하기 위해 현재 KDT 부트캠프를 통해 본격적으로 프로그래밍 학습에 몰입하고 있습니다.
+
+    파이썬 학습 3개월 차로 아직 부족하지만, 문서로만 구상했던 아이디어를 실제 코드로 구현해나가는 과정은 큰 만족감과 함께 저를 몰입하도록 했습니다. 단순한 개발을 넘어 LLM 시스템의 입력 설계(Prompt Engineer)와 서비스 기획부터 배포까지 과정을 경험하며 PM으로서의 역량을 키우고 사용자 중심의 실용적인 AI 제품을 만들어가는 팀을 이끌 준비를 하고 있습니다.
+
+    제 이력은 화려하진 않지만, 복합적인 경험과 몰입력, 문제 해결에 대한 집요함을 바탕으로 창업 또는 협업 프로젝트 안에서 실질적인 성과를 만들어내고 싶습니다.
 * **(향후 계획)** 핵심 기술 개발, UX/UI 디자인, 마케팅 및 사업 개발을 위한 핵심 인력 영입 예정.
 
 ---
 
 <a name="section19"></a>
 
-## 7. 자금 요청 및 사용 계획 (Funding Request & Use of Funds)
+## 7. 자금지원 및 수상 이력 사항
 
-* **요청 금액:** 1,000만 원 (시드 라운드)
-* **자금 사용 계획:**
-    * 고성능 개발 장비 구매 (아이디어 구현 가속화): 100만 원
-    * UX/UI 디자인 개선 및 초기 테스트 지원 (사용자 만족도 향상): 200만 원
-    * 초기 사용자 확보를 위한 마케팅 및 프로모션 (시장 진입 가속화): 700만 원
-* **주요 목표 (자금 사용 후):**
-    * MVP 기능 안정화 및 UX/UI 고도화 완료 (3개월 내).
-    * 초기 사용자 1,000명 확보 및 활성 사용자 비율 20% 달성을 목표로 하며, 이는 시장의 일반적인 사용자 확보 비용 및 전환율 벤치마크를 참고하여 설정된 도전적인 초기 목표입니다.[^14] (6개월 내)
-    * A/B 테스트를 통해 "LLM 성능 향상 데이터"의 유의미성을 1차적으로 검증할 계획이며, "유의미성" 판단 기준, 측정 항목(예: BLEU, ROUGE, 사용자 만족도 설문), 베이스라인 및 비교 모델은 MVP 개발 및 초기 데이터 수집 후 구체화될 예정입니다.[^15] (6개월 내)
-    * 후속 투자 유치를 위한 강력한 기반 마련.
+
 
 ---
 
@@ -233,15 +232,15 @@
 
 ## 8. 결론 (Conclusion)
 
-Cc는 명확한 시장의 문제점을 해결하고, 독창적인 기술과 사용자 중심 설계를 통해 개발자들에게 실질적인 가치를 제공하는 동시에, AI 시대의 핵심 자산인 고품질 데이터를 생성하는 혁신적인 프로젝트입니다. 본 시드 투자는 Cc가 가진 엄청난 잠재력을 실현하고, 개발자 생태계에 긍정적인 변화를 가져오는 첫걸음이 될 것입니다. 귀하의 현명한 판단과 지원을 정중히 요청드립니다.
+Flogi는 명확한 시장의 문제점을 해결하고, 독창적인 기술과 사용자 중심 설계를 통해 개발자들에게 실질적인 가치를 제공하는 동시에, AI 시대의 핵심 자산인 고품질 데이터를 생성하는 혁신적인 프로젝트입니다. 본 시드 투자는 Flogi가 가진 엄청난 잠재력을 실현하고, 개발자 생태계에 긍정적인 변화를 가져오는 첫걸음이 될 것입니다. 귀하의 현명한 판단과 지원을 정중히 요청드립니다.
 
 ---
 
 <a name="section21"></a>
 
-## 9. 참고 자료: Comfort Commit, 일반 회사원 업무 상황 예시
+## 9. 참고 자료: Flogi, 일반 회사원 업무 상황 예시
 
-본 참고 자료는 Cc의 핵심 기능과 가치가 개발자가 아닌 일반 회사원의 업무 상황에 적용되었을 때, 어떻게 이해될 수 있는지 비유와 예시를 통해 설명합니다. 이를 통해 서비스의 보편적인 문제 해결 능력과 확장 가능성에 대한 이해를 돕고자 합니다.
+본 참고 자료는 Flogi의 핵심 기능과 가치가 개발자가 아닌 일반 회사원의 업무 상황에 적용되었을 때, 어떻게 이해될 수 있는지 비유와 예시를 통해 설명합니다. 이를 통해 서비스의 보편적인 문제 해결 능력과 확장 가능성에 대한 이해를 돕고자 합니다.
 
 <a name="section22"></a>
 
@@ -257,7 +256,7 @@ Cc는 명확한 시장의 문제점을 해결하고, 독창적인 기술과 사�
 
 <a name="section23"></a>
 
-### 9.2. Comfort Commit의 해결책: "AI 비서가 알아서 정리하고 제안"
+### 9.2. Flogi의 해결책: "AI 비서가 알아서 정리하고 제안"
 
 * **개발자 솔루션:** "AI가 작업한 코드 변경 사항과 그 맥락(관련 파일, 함수 등)을 분석하여, '기술 설명서'와 '커밋 초안'을 자동으로 생성해줍니다. 개발자는 이를 검토하고 최종 확정만 하면 됩니다."
 
@@ -290,8 +289,8 @@ Cc는 명확한 시장의 문제점을 해결하고, 독창적인 기술과 사�
 
 * **개발자의 차별점:** "단순히 코드 변경 내용을 요약하는 것을 넘어, AI가 개발자의 '의도'와 전체 작업의 '맥락'을 이해하려고 노력합니다. 또한, AI가 생성한 초안을 개발자가 최종 검토하고 확정하는 '사람 중심의 협업' 방식을 채택하며, 작업 결과물로 '기술 설명서'라는 부가적인 가치를 제공합니다."
 * **일반 회사원의 체감 (종합):**
-    * **"단순 요약 그 이상! 내 업무의 '핵심'을 이해하는 AI":** "요즘 AI 기반 업무 자동화 도구들이 많지만, 대부분은 단순히 긴 문서를 짧게 줄여주거나, 정해진 양식에 맞춰 내용을 채워주는 수준입니다. 하지만 Cc는 제가 여러 문서와 폴더에 걸쳐 복잡하게 진행한 업무 내용들의 '앞뒤 맥락'과 '진짜 중요한 핵심 의도'까지 파악해서, 마치 제 마음을 읽은 것처럼 똑똑하게 결과물을 정리해줍니다."
-    * **"AI는 똑똑한 초안 작성자, 최종 결정은 언제나 내가!":** "AI가 아무리 발전해도 제 업무의 모든 세부 사항이나 미묘한 상황까지 100% 이해하기는 어렵습니다. Cc는 AI가 '이런 보고서/기록 초안은 어떠세요?'라고 제안하면, 제가 그 내용을 직접 확인하고 '아, 이 부분은 시장 상황을 고려해서 이렇게 표현하는 것이 더 좋겠다' 또는 '이 고객에게는 이런 점을 더 강조해야 해' 와 같이 제 전문적인 판단을 더해 최종 결과물을 완성할 수 있도록 합니다. AI에게 일방적으로 지시받는 것이 아니라, AI를 저의 유능한 '업무 보조 비서' 또는 '초안 작성 전문가'로 활용하는 느낌입니다."
+    * **"단순 요약 그 이상! 내 업무의 '핵심'을 이해하는 AI":** "요즘 AI 기반 업무 자동화 도구들이 많지만, 대부분은 단순히 긴 문서를 짧게 줄여주거나, 정해진 양식에 맞춰 내용을 채워주는 수준입니다. 하지만 Flogi는 제가 여러 문서와 폴더에 걸쳐 복잡하게 진행한 업무 내용들의 '앞뒤 맥락'과 '진짜 중요한 핵심 의도'까지 파악해서, 마치 제 마음을 읽은 것처럼 똑똑하게 결과물을 정리해줍니다."
+    * **"AI는 똑똑한 초안 작성자, 최종 결정은 언제나 내가!":** "AI가 아무리 발전해도 제 업무의 모든 세부 사항이나 미묘한 상황까지 100% 이해하기는 어렵습니다. Flogi는 AI가 '이런 보고서/기록 초안은 어떠세요?'라고 제안하면, 제가 그 내용을 직접 확인하고 '아, 이 부분은 시장 상황을 고려해서 이렇게 표현하는 것이 더 좋겠다' 또는 '이 고객에게는 이런 점을 더 강조해야 해' 와 같이 제 전문적인 판단을 더해 최종 결과물을 완성할 수 있도록 합니다. AI에게 일방적으로 지시받는 것이 아니라, AI를 저의 유능한 '업무 보조 비서' 또는 '초안 작성 전문가'로 활용하는 느낌입니다."
     * **"결과물만 툭? NO! 과정과 근거까지 담긴 '상세 해설집' 제공!":** "단순히 최종 보고서나 요약된 기록만 제공하는 것이 아니라, '이 업무는 이러한 배경에서 시작되었고, 관련 자료 A, B, C를 분석하여, 이러한 의사결정 과정을 거쳐, 다음과 같은 결론/결과물을 도출했습니다'라는 식의 상세한 '업무 진행 해설집(기술 설명서)'까지 함께 만들어줍니다. 이 해설집은 나중에 제가 유사한 업무를 다시 진행하거나, 다른 팀원에게 제 업무 내용을 인수인계하거나, 상사에게 특정 의사결정의 배경을 설명해야 할 때 매우 유용하게 활용될 수 있는 귀중한 자료가 됩니다."
 
 ---
@@ -306,26 +305,26 @@ Cc는 명확한 시장의 문제점을 해결하고, 독창적인 기술과 사�
 
 [^3]: H. Tian, et al., "What are the characteristics of good commit messages? A case study of open source projects", *2021 IEEE/ACM 18th International Conference on Mining Software Repositories (MSR)*, 2021. (이 연구에 따르면, 5개 오픈소스 프로젝트의 커밋 중 44%가 품질 문제를 가지고 있었으며, 많은 커밋 메시지가 중요한 정보를 누락하고 있음을 발견했습니다. 이는 "fix bug"와 같은 모호한 메시지가 많을 수 있음을 시사합니다.) Available at: [https://arxiv.org/abs/2103.07780](https://arxiv.org/abs/2103.07780)
 
-[^4]: C. Bird, A. Bacchelli, et al., "A Study of Modern Code Review Practices at Microsoft", *Microsoft Research*, 2016. (이 연구에 따르면 평균 코드 리뷰 시간은 약 13분이며, 커밋 등을 통한 변경 컨텍스트가 부족할 경우 리뷰 시간이 증가하는 경향이 있음을 보여줍니다. 이는 개발자의 의도를 파악하는 데 시간이 소요됨을 뒷받침합니다.) Available at: [https://www.microsoft.com/en-us/research/publication/a-study-of-modern-code-review-practices-at-microsoft/](https://www.microsoft.com/en-us/research/publication/a-study-of-modern-code-review-practices-at-microsoft/)
+[^4]: C. Bird, A. BaFlogihelli, et al., "A Study of Modern Code Review Practices at Microsoft", *Microsoft Research*, 2016. (이 연구에 따르면 평균 코드 리뷰 시간은 약 13분이며, 커밋 등을 통한 변경 컨텍스트가 부족할 경우 리뷰 시간이 증가하는 경향이 있음을 보여줍니다. 이는 개발자의 의도를 파악하는 데 시간이 소요됨을 뒷받침합니다.) Available at: [https://www.microsoft.com/en-us/research/publication/a-study-of-modern-code-review-practices-at-microsoft/](https://www.microsoft.com/en-us/research/publication/a-study-of-modern-code-review-practices-at-microsoft/)
 
 [^5]: Business Research Insights, "Software Development Tools Market Size | Growth, 2033", *Business Research Insights*, 2024. (글로벌 소프트웨어 개발 도구 시장이 2024년 66.1억 달러에서 2033년 226억 달러로 연평균 14.5% 성장할 것으로 예측하며, 특히 클라우드 기반 도구의 빠른 성장을 전망합니다. GitHub Copilot과 같은 AI 도구의 인기는 이러한 시장 성장과 개발자 수용도를 반영합니다.) Available at: [https://www.businessresearchinsights.com/market-reports/software-development-tools-market-106006](https://www.businessresearchinsights.com/market-reports/software-development-tools-market-106006)
 
 [^6]: Stack Overflow, "2023 Developer Survey", *Stack Overflow*, 2023. (매년 진행되는 개발자 설문조사에서 개발자들은 워라밸, 생산성 향상 도구, 유연한 근무 환경 등에 높은 관심을 보입니다. 이는 워라밸 향상 솔루션에 대한 지속적인 수요를 시사합니다. 특정 수치를 직접 인용하기보다는 전반적인 트렌드를 참고할 수 있습니다.) Available at: [https://survey.stackoverflow.co/2023/](https://survey.stackoverflow.co/2023/)
 
-[^7]: 실제 Simhash, Jaccard 등의 정적 분석 기법이 코드 컨텍스트 분석에 활용되는 연구 사례는 다수 존재합니다. 예를 들어, S. Kim, et al., "MeCC: A Method for Commit Classification Using Commit Messages and Code Changes", *Applied Sciences*, 2021. (이 연구는 커밋 메시지와 코드 변경을 함께 분석하여 커밋을 분류하며, 정적 분석 기법의 활용 가능성을 보여줍니다. Cc는 이러한 기법들을 종합적으로 활용하여 컨텍스트를 분석하며, 그 효과는 자체 검증을 통해 구체화될 것입니다.) Available at: [https://www.mdpi.com/2076-3417/11/21/10350](https://www.mdpi.com/2076-3417/11/21/10350)
+[^7]: 실제 Simhash, Jaccard 등의 정적 분석 기법이 코드 컨텍스트 분석에 활용되는 연구 사례는 다수 존재합니다. 예를 들어, S. Kim, et al., "MeCC: A Method for Commit Classification Using Commit Messages and Code Changes", *Applied Sciences*, 2021. (이 연구는 커밋 메시지와 코드 변경을 함께 분석하여 커밋을 분류하며, 정적 분석 기법의 활용 가능성을 보여줍니다. Flogi는 이러한 기법들을 종합적으로 활용하여 컨텍스트를 분석하며, 그 효과는 자체 검증을 통해 구체화될 것입니다.) Available at: [https://www.mdpi.com/2076-3417/11/21/10350](https://www.mdpi.com/2076-3417/11/21/10350)
 
-[^8]: OpenAI, "GPT Best Practices", *OpenAI Documentation*. (LLM의 성능은 프롬프트에 제공되는 컨텍스트의 질과 양에 크게 좌우되며, 명확하고 관련성 높은 정보를 간결하게 제공하는 것이 중요하다고 강조합니다. Cc의 정보 밀도 최적화는 이러한 프롬프트 엔지니어링 원칙에 기반하며, 구체적인 성능 향상 효과는 내부 실험을 통해 측정될 예정입니다.) Available at: [https://platform.openai.com/docs/guuuides/gpt-best-practices](https://platform.openai.com/docs/guuuides/gpt-best-practices)
+[^8]: OpenAI, "GPT Best Practices", *OpenAI Documentation*. (LLM의 성능은 프롬프트에 제공되는 컨텍스트의 질과 양에 크게 좌우되며, 명확하고 관련성 높은 정보를 간결하게 제공하는 것이 중요하다고 강조합니다. Flogi의 정보 밀도 최적화는 이러한 프롬프트 엔지니어링 원칙에 기반하며, 구체적인 성능 향상 효과는 내부 실험을 통해 측정될 예정입니다.) Available at: [https://platform.openai.com/docs/guuuides/gpt-best-practices](https://platform.openai.com/docs/guuuides/gpt-best-practices)
 
-[^9]: D. S. Wuu, et al., "An Empirical Study on the Use of Automatic Commit Message Generation Tools in Practice", *Proceedings of the ACM/IEEE International Symposium on Empirical Software Engineering and Measurement (ESEM)*, 2023. (자동 커밋 생성 도구의 사용 효과에 대한 연구들이 있으며, 일부 연구에서는 시간 절약 효과를 보고하기도 합니다. Cc의 60% 단축 목표는 내부 KPI이며, 실제 효과는 사용자 데이터 기반으로 측정될 것입니다.) (유사 연구 검색 필요)
+[^9]: D. S. Wuu, et al., "An Empirical Study on the Use of Automatic Commit Message Generation Tools in Practice", *Proceedings of the ACM/IEEE International Symposium on Empirical Software Engineering and Measurement (ESEM)*, 2023. (자동 커밋 생성 도구의 사용 효과에 대한 연구들이 있으며, 일부 연구에서는 시간 절약 효과를 보고하기도 합니다. Flogi의 60% 단축 목표는 내부 KPI이며, 실제 효과는 사용자 데이터 기반으로 측정될 것입니다.) (유사 연구 검색 필요)
 
 [^10]: M. Gousios, G. Pinto, and D. M. German, "Work habits and communication in a large distributed software project", *Proceedings of the 10th Working Conference on Mining Software Repositories*, 2013. (이 연구는 분산된 대규모 소프트웨어 프로젝트에서 커뮤니케이션과 작업 습관의 중요성을 강조하며, 명확한 커밋 메시지가 팀 협업과 코드 이해에 긍정적인 영향을 미칠 수 있음을 시사합니다.) Available at: [https://dl.acm.org/doi/10.1109/MSR.2013.6624031](https://dl.acm.org/doi/10.1109/MSR.2013.6624031)
 
-[^11]: Y. Wang, et al., "CodeTrans: Towards Cracking the Language of Code Translation with BigCode Models and In-Context Learning", *arXiv preprint arXiv:2308.01341*, 2023. (LLM을 코드 관련 작업(번역, 요약 등)에 활용하는 연구가 활발하며, 고품질의 코드-텍스트 쌍 데이터가 모델 성능 향상에 중요함을 보여줍니다. Cc가 생성하는 "컨텍스트 + AI 초안 + 개발자 수정본" 데이터는 이러한 고품질 Instruction-Following 데이터셋의 한 예가 될 수 있습니다.) Available at: [https://arxiv.org/abs/2308.01341](https://arxiv.org/abs/2308.01341)
+[^11]: Y. Wang, et al., "CodeTrans: Towards Cracking the Language of Code Translation with BigCode Models and In-Context Learning", *arXiv preprint arXiv:2308.01341*, 2023. (LLM을 코드 관련 작업(번역, 요약 등)에 활용하는 연구가 활발하며, 고품질의 코드-텍스트 쌍 데이터가 모델 성능 향상에 중요함을 보여줍니다. Flogi가 생성하는 "컨텍스트 + AI 초안 + 개발자 수정본" 데이터는 이러한 고품질 Instruction-Following 데이터셋의 한 예가 될 수 있습니다.) Available at: [https://arxiv.org/abs/2308.01341](https://arxiv.org/abs/2308.01341)
 
-[^12]: Firecrawl Blog, "How to Create Custom Instruction Datasets for LLM Fine-tuning", *Firecrawl*, 2025. (도메인 특화, 데이터 프라이버시, 성능 최적화를 위해 커스텀 Instruction 데이터셋 구축의 필요성을 강조하며, 잘 큐레이션된 데이터셋이 범용 데이터셋 대비 특정 작업에서 훨씬 우수한 성능을 보임을 시사합니다. Cc의 데이터 생성 방식은 이러한 커스텀 데이터셋 구축의 한 형태로 볼 수 있습니다.) Available at: [https://www.firecrawl.dev/blog/custom-instruction-datasets-llm-fine-tuning](https://www.firecrawl.dev/blog/custom-instruction-datasets-llm-fine-tuning) (검색 결과 기반)
+[^12]: Firecrawl Blog, "How to Create Custom Instruction Datasets for LLM Fine-tuning", *Firecrawl*, 2025. (도메인 특화, 데이터 프라이버시, 성능 최적화를 위해 커스텀 Instruction 데이터셋 구축의 필요성을 강조하며, 잘 큐레이션된 데이터셋이 범용 데이터셋 대비 특정 작업에서 훨씬 우수한 성능을 보임을 시사합니다. Flogi의 데이터 생성 방식은 이러한 커스텀 데이터셋 구축의 한 형태로 볼 수 있습니다.) Available at: [https://www.firecrawl.dev/blog/custom-instruction-datasets-llm-fine-tuning](https://www.firecrawl.dev/blog/custom-instruction-datasets-llm-fine-tuning) (검색 결과 기반)
 
-[^13]: Revelo Blog, "SFT: How to Fine-Tune LLMs for High-Quality Code Generation", *Revelo*, 2025. (SFT(Supervised Fine-Tuning)가 LLM의 코드 생성 품질 향상에 중요한 기술이며, 특히 사람의 피드백과 전문가가 큐레이션한 데이터를 활용하는 것이 정확도와 효율성을 높이는 데 기여한다고 설명합니다. 이는 Cc가 생성하는 "전문가(개발자) 수정 데이터"의 가치를 뒷받침합니다.) Available at: [https://www.revelo.com/blog/sft-llm-code-generation](https://www.revelo.com/blog/sft-llm-code-generation) (검색 결과 기반)
+[^13]: Revelo Blog, "SFT: How to Fine-Tune LLMs for High-Quality Code Generation", *Revelo*, 2025. (SFT(Supervised Fine-Tuning)가 LLM의 코드 생성 품질 향상에 중요한 기술이며, 특히 사람의 피드백과 전문가가 큐레이션한 데이터를 활용하는 것이 정확도와 효율성을 높이는 데 기여한다고 설명합니다. 이는 Flogi가 생성하는 "전문가(개발자) 수정 데이터"의 가치를 뒷받침합니다.) Available at: [https://www.revelo.com/blog/sft-llm-code-generation](https://www.revelo.com/blog/sft-llm-code-generation) (검색 결과 기반)
 
-[^14]: Userpilot, "Average Customer Acquisition Cost: Benchmarks by Industry". (SaaS 산업의 평균 고객 확보 비용(CAC) 등의 벤치마크 자료를 참고하여, 초기 사용자 확보 목표의 현실성을 가늠해 볼 수 있습니다. 다만, Cc과 같은 개발자 대상 B2C/B2B 하이브리드 모델의 정확한 벤치마크는 찾기 어려우므로, 초기에는 공격적인 목표 설정 후 실제 데이터를 통해 조정해 나갈 필요가 있습니다.) Available at: [https://userpilot.com/blog/average-customer-acquisition-cost/](https://userpilot.com/blog/average-customer-acquisition-cost/) (검색 결과 기반)
+[^14]: Userpilot, "Average Customer Acquisition Cost: Benchmarks by Industry". (SaaS 산업의 평균 고객 확보 비용(CAC) 등의 벤치마크 자료를 참고하여, 초기 사용자 확보 목표의 현실성을 가늠해 볼 수 있습니다. 다만, Flogi와 같은 개발자 대상 B2C/B2B 하이브리드 모델의 정확한 벤치마크는 찾기 어려우므로, 초기에는 공격적인 목표 설정 후 실제 데이터를 통해 조정해 나갈 필요가 있습니다.) Available at: [https://userpilot.com/blog/average-customer-acquisition-cost/](https://userpilot.com/blog/average-customer-acquisition-cost/) (검색 결과 기반)
 
-[^15]: Evuuidently AI, "LLM evaluation metrics and methods, explained simply". (LLM 성능 평가는 다양한 지표(정확도, 재현율, F1-Score, BLEU, ROUGE 등)와 방법(결정론적 매칭, 텍스트 통계, 사용자 피드백)을 활용하여 이루어집니다. Cc의 데이터 유의미성 검증 시 이러한 표준적인 평가 지표 및 방법론을 참고하여 설계할 것입니다.) Available at: [https://www.evuuidentlyai.com/llm-guuuide/llm-evaluation-metrics](https://www.evuuidentlyai.com/llm-guuuide/llm-evaluation-metrics) (검색 결과 기반)
+[^15]: Evuuidently AI, "LLM evaluation metrics and methods, explained simply". (LLM 성능 평가는 다양한 지표(정확도, 재현율, F1-Score, BLEU, ROUGE 등)와 방법(결정론적 매칭, 텍스트 통계, 사용자 피드백)을 활용하여 이루어집니다. Flogi의 데이터 유의미성 검증 시 이러한 표준적인 평가 지표 및 방법론을 참고하여 설계할 것입니다.) Available at: [https://www.evuuidentlyai.com/llm-guuuide/llm-evaluation-metrics](https://www.evuuidentlyai.com/llm-guuuide/llm-evaluation-metrics) (검색 결과 기반)
