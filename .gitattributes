@@ -1,0 +1,3 @@
+# repo-autopilot 파이프라인 파일을 GitHub PR diff에서 자동 접기
+.autopilot/** linguist-generated=true
+.autopilot/** -diff

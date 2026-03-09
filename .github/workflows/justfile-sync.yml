@@ -1,0 +1,103 @@
+# .github/workflows/justfile-sync.yml
+name: Justfile Auto-Sync
+
+on:
+  push:
+    branches: [main, develop]
+    paths-ignore:
+      - 'justfile'
+      - '.autopilot/**'
+      - '*.md'
+      - 'LICENSE'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync-justfile:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install jq
+        run: |
+          if ! command -v jq &>/dev/null; then
+            sudo apt-get update && sudo apt-get install -y jq
+          fi
+
+      - name: Scan Repository
+        run: |
+          bash .autopilot/scanner.sh . > scan-result.json
+          echo "::group::Scan Result"
+          cat scan-result.json | jq '.'
+          echo "::endgroup::"
+
+      - name: Generate Justfile via LLM
+        env:
+          # Secrets (민감 — org 또는 repo secrets에 등록)
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          # Variables (비민감 — org 또는 repo variables에 등록)
+          # 미설정 시 generate.sh 내부 기본값 사용
+          AUTOPILOT_MODEL: ${{ vars.AUTOPILOT_MODEL }}
+          AUTOPILOT_FALLBACK_MODEL: ${{ vars.AUTOPILOT_FALLBACK_MODEL }}
+          AUTOPILOT_MAX_TOKENS: ${{ vars.AUTOPILOT_MAX_TOKENS }}
+          AUTOPILOT_TEMPERATURE: ${{ vars.AUTOPILOT_TEMPERATURE }}
+        run: |
+          bash .autopilot/generate.sh scan-result.json > justfile.new
+
+      - name: Check Diff
+        id: diff
+        run: |
+          if [[ ! -f justfile ]]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          elif diff -q justfile justfile.new > /dev/null 2>&1; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create or Update PR
+        if: steps.diff.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mv justfile.new justfile
+          git config user.name "repo-autopilot[bot]"
+          git config user.email "autopilot@noreply.github.com"
+
+          BRANCH="autopilot/justfile-sync"
+          git checkout -B "$BRANCH"
+          git add justfile
+
+          STACK=$(jq -r '.detected_stack | to_entries | map(select(.value != null)) | map(.key) | join(", ")' scan-result.json)
+          PORTS=$(jq -r '.ports_in_use | join(", ")' scan-result.json)
+
+          git commit -m "🤖 justfile 자동 업데이트
+
+          - 감지된 스택: ${STACK}
+          - 포트: ${PORTS}"
+
+          git push -f origin "$BRANCH"
+
+          PR_BODY="## 🤖 Justfile 자동 생성/업데이트"
+          PR_BODY+=$'\n\n'
+          PR_BODY+=$(jq -r '.detected_stack | to_entries[] | select(.value != null) | "- **\(.key)**: \(.value.framework // .value.type // "detected")"' scan-result.json)
+          PR_BODY+=$'\n\n### 포트\n'
+          PR_BODY+=$(jq -r '.ports_in_use | map(tostring) | join(", ")' scan-result.json)
+          PR_BODY+=$'\n\n---\n> 머지 전에 justfile 내용을 확인해 주세요.'
+
+          if gh pr list --head "$BRANCH" --json number --jq '.[0].number' | read -r PR_NUM; then
+            gh pr edit "$PR_NUM" --body "$PR_BODY"
+          else
+            gh pr create \
+              --title "🤖 justfile 자동 생성/업데이트" \
+              --body "$PR_BODY" \
+              --label "autopilot" \
+              --base main \
+              --head "$BRANCH"
+          fi

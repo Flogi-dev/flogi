@@ -1,0 +1,42 @@
+# .autopilot/config.yml
+# repo-autopilot 파이프라인 설정
+
+scanner:
+  exclude_dirs:
+    - node_modules
+    - .git
+    - __pycache__
+    - .next
+    - venv
+    - .venv
+    - dist
+    - build
+    - .cache
+    - .autopilot
+    - .claude
+    - .idea
+    - .vscode
+
+llm:
+  provider: openrouter
+  model: qwen/qwen3-coder-next
+  fallback_model: google/gemini-flash-1.5
+  max_tokens: 4096
+  temperature: 0.1
+
+output:
+  mode: pr
+  pr_title: "🤖 justfile 자동 생성/업데이트"
+  pr_labels:
+    - autopilot
+    - justfile
+  branch: autopilot/justfile-sync
+
+ports:
+  strategy: auto
+  range_start: 3000
+  reserved:
+    - 5432
+    - 6333
+    - 6379
+    - 27017
