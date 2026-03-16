@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "generated_at": "2026-03-16T02:48:24Z",
+  "relevant_files": [
+    "01_Web/Dockerfile",
+    "01_Web/pyproject.toml",
+    "02_pipeline/pyproject.toml",
+    "docker-compose.yml"
+  ],
+  "total_count": 4
+}
