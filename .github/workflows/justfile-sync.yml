@@ -10,6 +10,12 @@ on:
       - '*.md'
       - 'LICENSE'
   workflow_dispatch:
+    inputs:
+      force:
+        description: 'Force full pipeline (skip manifest check)'
+        required: false
+        default: 'false'
+        type: boolean
 
 permissions:
   contents: write
@@ -30,19 +36,44 @@ jobs:
             sudo apt-get update && sudo apt-get install -y jq
           fi
 
+      # --- Incremental Check: manifest 기반으로 실행 여부 결정 ---
+      - name: Check Manifest (incremental)
+        id: manifest
+        if: ${{ github.event.inputs.force != 'true' }}
+        run: |
+          if bash .autopilot/manifest.sh check HEAD~1 2>&1; then
+            echo "should_run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "should_run=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Skip if no relevant changes
+        if: ${{ steps.manifest.outputs.should_run == 'false' && github.event.inputs.force != 'true' }}
+        run: |
+          echo "⏭️  No relevant file changes detected. Skipping pipeline."
+          echo "💡 Use workflow_dispatch with force=true to override."
+
+      # --- Full Pipeline: 관련 파일 변경 있거나 force일 때만 ---
       - name: Scan Repository
+        if: ${{ steps.manifest.outputs.should_run != 'false' || github.event.inputs.force == 'true' }}
         run: |
           bash .autopilot/scanner.sh . > scan-result.json
           echo "::group::Scan Result"
           cat scan-result.json | jq '.'
           echo "::endgroup::"
 
+      - name: Update Manifest
+        if: ${{ steps.manifest.outputs.should_run != 'false' || github.event.inputs.force == 'true' }}
+        run: |
+          bash .autopilot/manifest.sh generate scan-result.json > /dev/null
+          echo "::group::Manifest"
+          cat .autopilot/manifest.json | jq '.'
+          echo "::endgroup::"
+
       - name: Generate Justfile via LLM
+        if: ${{ steps.manifest.outputs.should_run != 'false' || github.event.inputs.force == 'true' }}
         env:
-          # Secrets (민감 — org 또는 repo secrets에 등록)
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
-          # Variables (비민감 — org 또는 repo variables에 등록)
-          # 미설정 시 generate.sh 내부 기본값 사용
           AUTOPILOT_MODEL: ${{ vars.AUTOPILOT_MODEL }}
           AUTOPILOT_FALLBACK_MODEL: ${{ vars.AUTOPILOT_FALLBACK_MODEL }}
           AUTOPILOT_MAX_TOKENS: ${{ vars.AUTOPILOT_MAX_TOKENS }}
@@ -52,6 +83,7 @@ jobs:
 
       - name: Check Diff
         id: diff
+        if: ${{ steps.manifest.outputs.should_run != 'false' || github.event.inputs.force == 'true' }}
         run: |
           if [[ ! -f justfile ]]; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
@@ -72,7 +104,7 @@ jobs:
 
           BRANCH="autopilot/justfile-sync"
           git checkout -B "$BRANCH"
-          git add justfile
+          git add justfile .autopilot/manifest.json
 
           STACK=$(jq -r '.detected_stack | to_entries | map(select(.value != null)) | map(.key) | join(", ")' scan-result.json)
           PORTS=$(jq -r '.ports_in_use | join(", ")' scan-result.json)
@@ -86,12 +118,21 @@ jobs:
 
           PR_BODY="## 🤖 Justfile 자동 생성/업데이트"
           PR_BODY+=$'\n\n'
-          PR_BODY+=$(jq -r '.detected_stack | to_entries[] | select(.value != null) | "- **\(.key)**: \(.value.framework // .value.type // "detected")"' scan-result.json)
+          PR_BODY+=$(jq -r '.detected_stack | to_entries[] | select(.value != null) | "- **\(.key)**: \(.value.framework // .value.type // "detected")"' scan-result.json || true)
           PR_BODY+=$'\n\n### 포트\n'
-          PR_BODY+=$(jq -r '.ports_in_use | map(tostring) | join(", ")' scan-result.json)
+          PR_BODY+=$(jq -r '.ports_in_use | map(tostring) | join(", ")' scan-result.json || true)
+          PR_BODY+=$'\n\n### 확장 컨텍스트\n'
+          PR_BODY+=$(jq -r '
+            .extended_context |
+            (if .npm_scripts | length > 0 then "- **npm scripts**: " + ([.npm_scripts[].path] | join(", ")) else empty end),
+            (if .makefile_targets | length > 0 then "- **Makefile targets**: detected" else empty end),
+            (if .deploy_config | length > 0 then "- **Deploy config**: " + (keys | join(", ")) else empty end),
+            (if .monorepo | length > 0 then "- **Monorepo**: " + (keys | join(", ")) else empty end)
+          ' scan-result.json 2>/dev/null || true)
           PR_BODY+=$'\n\n---\n> 머지 전에 justfile 내용을 확인해 주세요.'
 
-          if gh pr list --head "$BRANCH" --json number --jq '.[0].number' | read -r PR_NUM; then
+          PR_NUM=$(gh pr list --head "$BRANCH" --json number --jq '.[0].number' 2>/dev/null || true)
+          if [[ -n "$PR_NUM" && "$PR_NUM" != "null" ]]; then
             gh pr edit "$PR_NUM" --body "$PR_BODY"
           else
             gh pr create \

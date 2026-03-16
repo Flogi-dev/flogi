@@ -69,10 +69,17 @@ _CFG_TOKENS="$_DEFAULT_TOKENS"
 _CFG_TEMP="$_DEFAULT_TEMP"
 
 if command -v yq &>/dev/null && [[ -f "$CONFIG_FILE" ]]; then
-  _CFG_MODEL=$(yq -r '.llm.model // empty' "$CONFIG_FILE" 2>/dev/null)
-  _CFG_FALLBACK=$(yq -r '.llm.fallback_model // empty' "$CONFIG_FILE" 2>/dev/null)
-  _CFG_TOKENS=$(yq -r '.llm.max_tokens // empty' "$CONFIG_FILE" 2>/dev/null)
-  _CFG_TEMP=$(yq -r '.llm.temperature // empty' "$CONFIG_FILE" 2>/dev/null)
+  # mikefarah/yq (Go)와 kislyuk/yq (Python) 모두 호환되도록 처리
+  # yq 실패 시 기본값 유지 (CI 환경에서 mikefarah/yq는 '// empty' 문법 미지원)
+  _CFG_MODEL=$(yq -r '.llm.model' "$CONFIG_FILE" 2>/dev/null || true)
+  _CFG_FALLBACK=$(yq -r '.llm.fallback_model' "$CONFIG_FILE" 2>/dev/null || true)
+  _CFG_TOKENS=$(yq -r '.llm.max_tokens' "$CONFIG_FILE" 2>/dev/null || true)
+  _CFG_TEMP=$(yq -r '.llm.temperature' "$CONFIG_FILE" 2>/dev/null || true)
+  # yq 실패 또는 null/empty 결과 시 기본값 사용
+  [[ "$_CFG_MODEL" == "null" ]] && _CFG_MODEL=""
+  [[ "$_CFG_FALLBACK" == "null" ]] && _CFG_FALLBACK=""
+  [[ "$_CFG_TOKENS" == "null" ]] && _CFG_TOKENS=""
+  [[ "$_CFG_TEMP" == "null" ]] && _CFG_TEMP=""
   _CFG_MODEL="${_CFG_MODEL:-$_DEFAULT_MODEL}"
   _CFG_FALLBACK="${_CFG_FALLBACK:-$_DEFAULT_FALLBACK}"
   _CFG_TOKENS="${_CFG_TOKENS:-$_DEFAULT_TOKENS}"

@@ -16,6 +16,19 @@ scanner:
     - .claude
     - .idea
     - .vscode
+    - coverage
+    - .nyc_output
+    - .turbo
+    - .parcel-cache
+    - sample
+    - docs
+    - test
+    - tests
+    - e2e
+    - cypress
+    - .obsidian
+    - vendor
+    - bower_components
 
 llm:
   provider: openrouter
@@ -31,6 +44,13 @@ output:
     - autopilot
     - justfile
   branch: autopilot/justfile-sync
+
+incremental:
+  enabled: true
+  # manifest.json에 추가로 추적할 파일 패턴 (glob)
+  extra_watch_patterns:
+    - "*.lock"
+    - "*.lockb"
 
 ports:
   strategy: auto
